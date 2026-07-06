@@ -42,3 +42,19 @@ guessing.
 6. Note the "TRANSCRIPT SOURCE" line from the file: if it says
    "auto-generated" or "translated," mention that to the user once,
    since accuracy on names/technical terms is lower for those.
+
+## Chatting with Claude about a video (local, via the Claude API)
+`chat_about_video.py` is a standalone local front end: it fetches the
+transcript (reusing the logic above) and opens an interactive Q&A loop
+backed by the Claude API, so you can talk to Claude about the video
+without pasting anything.
+
+- Meant to run on your own machine, where YouTube is reachable and your
+  API key stays off any remote environment.
+- Setup: `pip install youtube-transcript-api requests anthropic` and
+  `export ANTHROPIC_API_KEY=sk-ant-...`
+- Run: `python3 chat_about_video.py "<url>"`
+- The transcript is loaded into Claude's system prompt with prompt
+  caching enabled, so follow-up questions reuse it cheaply instead of
+  re-sending it each turn. Defaults to `claude-opus-4-8`; override with
+  `--model`.
