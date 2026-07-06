@@ -51,8 +51,13 @@ without pasting anything.
 
 - Meant to run on your own machine, where YouTube is reachable and your
   API key stays off any remote environment.
-- Setup: `pip install youtube-transcript-api requests anthropic` and
-  `export ANTHROPIC_API_KEY=sk-ant-...`
+- Setup: `pip install youtube-transcript-api requests anthropic`
+- API key: put it in a `.env` file next to the script (or in the
+  directory you run from):
+  `ANTHROPIC_API_KEY=sk-ant-...`
+  The script loads `.env` automatically — no `export` needed. (`.env` is
+  git-ignored so the key never gets committed.) A shell `export` also
+  still works, and `--env-file` points at a differently-named file.
 - Run: `python3 chat_about_video.py "<url>"`
 - The transcript is loaded into Claude's system prompt with prompt
   caching enabled, so follow-up questions reuse it cheaply instead of

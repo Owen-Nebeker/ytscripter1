@@ -21,7 +21,9 @@ Requires:
 """
 
 import argparse
+import os
 import sys
+from pathlib import Path
 
 import anthropic
 
@@ -32,6 +34,36 @@ from yt2claude import (
     get_metadata,
     get_transcript,
 )
+
+
+def load_env_file(env_file: str) -> bool:
+    """
+    Load KEY=VALUE pairs from a .env file into the environment so the script
+    can pull ANTHROPIC_API_KEY straight from the file instead of relying on a
+    shell `export`. No third-party dependency — this parses the file itself.
+
+    Looks for the file relative to the current directory first, then next to
+    this script. Values found in the file take precedence for this run.
+    Returns True if a file was found and read.
+    """
+    candidates = [Path(env_file), Path(__file__).resolve().parent / env_file]
+    path = next((p for p in candidates if p.is_file()), None)
+    if path is None:
+        return False
+
+    for raw in path.read_text(encoding="utf-8").splitlines():
+        line = raw.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, _, value = line.partition("=")
+        key = key.strip()
+        # Allow an optional leading `export ` (common in .env files).
+        if key.startswith("export "):
+            key = key[len("export "):].strip()
+        value = value.strip().strip('"').strip("'")
+        if key:
+            os.environ[key] = value
+    return True
 
 
 def build_system_prompt(meta: dict, transcript_text: str, source: str) -> list:
@@ -76,7 +108,18 @@ def main():
     parser.add_argument("url", help="YouTube video URL or bare video ID")
     parser.add_argument("--lang", default="en", help="Preferred caption language (default: en)")
     parser.add_argument("--model", default="claude-opus-4-8", help="Claude model ID")
+    parser.add_argument("--env-file", default=".env", help="File to load env vars from (default: .env)")
     args = parser.parse_args()
+
+    # Pull ANTHROPIC_API_KEY (and anything else) straight from the .env file.
+    load_env_file(args.env_file)
+    if not os.environ.get("ANTHROPIC_API_KEY"):
+        sys.exit(
+            f"Error: ANTHROPIC_API_KEY not found. Put it in {args.env_file} as:\n"
+            "  ANTHROPIC_API_KEY=sk-ant-...\n"
+            f"(looked in the current directory and next to this script), or export it\n"
+            "in your shell. Get a key at console.anthropic.com."
+        )
 
     try:
         video_id = extract_video_id(args.url)
