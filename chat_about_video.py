@@ -114,15 +114,31 @@ def main():
         messages.append({"role": "user", "content": question})
 
         print("claude > ", end="", flush=True)
-        with client.messages.stream(
-            model=args.model,
-            max_tokens=4096,
-            system=system,
-            messages=messages,
-        ) as stream:
-            for text in stream.text_stream:
-                print(text, end="", flush=True)
-            final = stream.get_final_message()
+        try:
+            with client.messages.stream(
+                model=args.model,
+                max_tokens=4096,
+                system=system,
+                messages=messages,
+            ) as stream:
+                for text in stream.text_stream:
+                    print(text, end="", flush=True)
+                final = stream.get_final_message()
+        except anthropic.AuthenticationError:
+            # A bad key won't fix itself by retrying — stop with a clear message.
+            sys.exit(
+                "\nError: your ANTHROPIC_API_KEY was rejected (401 invalid x-api-key).\n"
+                "Check that it's set in this terminal and pasted in full:\n"
+                '  echo "${ANTHROPIC_API_KEY:0:14}"   # should start with sk-ant-\n'
+                "Get or regenerate a key at console.anthropic.com (API keys), and make\n"
+                "sure that workspace has API billing set up. Note: a Claude.ai Pro/Max\n"
+                "subscription is separate from API access and does not include a key."
+            )
+        except anthropic.APIError as e:
+            # Transient/other API errors: drop the unanswered turn and let them retry.
+            print(f"\n[API error: {e}. Try again.]\n")
+            messages.pop()
+            continue
         print("\n")
 
         reply = "".join(b.text for b in final.content if b.type == "text")
