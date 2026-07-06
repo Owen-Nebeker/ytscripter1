@@ -26,9 +26,13 @@ guessing.
    `python3 yt2claude.py "<url>" --outdir /tmp`
 3. If it exits with an error, report the error message to the user
    directly — don't retry silently or invent a workaround. Common causes:
-   captions disabled by uploader (no fix), or a network/access failure
-   (tell the user this environment may not have access to fetch it, and
-   they should try running the script locally instead).
+   - Captions disabled by the uploader (no fix).
+   - Network policy block: in sandboxed environments (e.g. Claude Code on
+     the web) the egress proxy returns a 403/407 for youtube.com because it
+     isn't on the environment's allowlist. The script now detects this and
+     says so explicitly. This is NOT a YouTube problem and there is no code
+     workaround — do not try to route around the proxy. Tell the user to run
+     the script locally, or to have an admin allowlist youtube.com.
 4. If it succeeds, read the resulting `.txt` file and use its contents to
    answer the user's questions about the video.
 5. If the script reports the transcript is very long (its own output will

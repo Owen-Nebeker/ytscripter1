@@ -39,6 +39,35 @@ from youtube_transcript_api._errors import (
 )
 
 
+def _is_egress_policy_block(exc: Exception) -> bool:
+    """
+    True when a request was rejected by a policy-enforcing egress proxy
+    rather than by YouTube. In sandboxed environments (e.g. Claude Code on
+    the web) outbound HTTPS goes through a proxy that answers 403/407 to
+    CONNECT for hosts that aren't on the environment's allowlist. That looks
+    nothing like a YouTube-side failure, so we detect it explicitly to avoid
+    sending people chasing the wrong problem.
+    """
+    text = str(exc)
+    if "Tunnel connection failed" in text:
+        return True
+    proxy_denied = ("403 Forbidden" in text) or ("407" in text)
+    return isinstance(exc, requests.exceptions.ProxyError) and proxy_denied
+
+
+_EGRESS_BLOCK_MESSAGE = (
+    "Network policy blocked the request before it reached YouTube.\n"
+    "This environment's egress proxy denied the connection to youtube.com "
+    "(a 403/407 on the proxy tunnel), so this is NOT a YouTube outage, a "
+    "captions-disabled video, or a bug in this script.\n"
+    "Fixes:\n"
+    "  - Run this script locally, where there's no egress restriction, or\n"
+    "  - Have an admin add youtube.com to this environment's network "
+    "allowlist.\n"
+    "Do not try to route around the proxy — that's the org's security policy."
+)
+
+
 def extract_video_id(url: str) -> str:
     """Handle youtube.com/watch?v=, youtu.be/, /shorts/, /embed/ formats."""
     patterns = [
@@ -84,6 +113,10 @@ def get_transcript(video_id: str, lang: str = "en"):
         raise RuntimeError(
             "Video unavailable (private, deleted, or region-locked)."
         )
+    except requests.exceptions.RequestException as e:
+        if _is_egress_policy_block(e):
+            raise RuntimeError(_EGRESS_BLOCK_MESSAGE)
+        raise RuntimeError(f"Network error fetching transcript list: {e}")
 
     # 1. Try manually-created in requested language
     try:
