@@ -6,6 +6,7 @@ description: Use when the user pastes a YouTube URL (youtube.com/watch, youtu.be
 # YouTube Transcript Fetch
 
 ## What this does
+
 Given a YouTube URL, fetches the video's caption transcript (preferring
 human-made captions over auto-generated ones) and its title/channel, so
 you can discuss the video's spoken content without the user having to
@@ -18,6 +19,10 @@ podcasts/interviews/talking-head content, and weaker for anything where
 the visuals carry meaning. If the user asks something the transcript
 can't answer (e.g. "what did the slide say"), say so plainly rather than
 guessing.
+
+Keep in mind also that this requires a CLAUDE API KEY WHICH IS GENERALLY NOT FREE! Tokens can be purchased from [console.anthropic.com](console.anthropic.com).
+
+Throw your API key into a .env file local to wherever you're running the script.
 
 ## Steps
 1. Install the dependency if not already present:
