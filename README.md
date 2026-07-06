@@ -19,6 +19,11 @@ the visuals carry meaning. If the user asks something the transcript
 can't answer (e.g. "what did the slide say"), say so plainly rather than
 guessing.
 
+Keep in mind also that this requires a CLAUDE API KEY WHICH IS GENERALLY NOT FREE!
+tokens can be purchased from console.anthropic.com.
+
+Throw your API key into a .env file local to whereever you're running the script.
+
 ## Steps
 1. Install the dependency if not already present:
    `pip install youtube-transcript-api requests --break-system-packages -q`
