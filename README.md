@@ -19,8 +19,7 @@ the visuals carry meaning. If the user asks something the transcript
 can't answer (e.g. "what did the slide say"), say so plainly rather than
 guessing.
 
-Keep in mind also that this requires a CLAUDE API KEY WHICH IS GENERALLY NOT FREE!
-tokens can be purchased from console.anthropic.com.
+Keep in mind also that this requires a CLAUDE API KEY WHICH IS GENERALLY NOT FREE! Tokens can be purchased from [link text](console.anthropic.com).
 
 Throw your API key into a .env file local to whereever you're running the script.
 
