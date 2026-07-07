@@ -1,5 +1,5 @@
 ---
-name: yt-transcript
+##name: yt-transcript
 
 I love watching education, podcast-style YouTube videos, however these sorts of videos fall victim all too often to unbacked claims, logical fallacies, sneaky biases, etc.
 
