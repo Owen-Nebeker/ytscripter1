@@ -26,7 +26,7 @@ Throw your API key into a .env file local to wherever you're running the script.
 1. Install the dependency if not already present:
    `pip install youtube-transcript-api requests --break-system-packages -q`
 2. Obtain an Anthopic API key from the link above, add credit to it. Format it in your .env as:
-   `ANTRHOPIC_API_KEY=xxxxxxxxxxxxx...`
+   `ANTHROPIC_API_KEY=xxxxxxxxxxxxx...`
 4. Run the script on the user's URL:
    `python3 yt2claude.py "<url>"`
 5. If it exits with an error, report the error message to the user
@@ -48,3 +48,9 @@ GENERAL NOTES:
 
 - ensure your .env is in the same folder as wherever you're running your script from.
 - run the script in the terminal. make sure to navigate to the folder your using within the terminal before running the script.
+
+## Optional: chat with Claude about a video
+`chat_about_video.py` fetches the transcript and opens an interactive
+Q&A loop with Claude in your terminal. It reads your key from the `.env`
+file automatically. Run it locally:
+`python3 chat_about_video.py "<url>"`
