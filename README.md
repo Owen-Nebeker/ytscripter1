@@ -1,8 +1,3 @@
----
-##name: yt-transcript
-
-I love watching education, podcast-style YouTube videos, however these sorts of videos fall victim all too often to unbacked claims, logical fallacies, sneaky biases, etc.
-
 This program automates a process I have already been doing naturally and from which I have great benefited, that is, copying a URL, using a 3rd party website to download the transcript, and then uploading the transcipt to Claude to help me think more critically about the topics. I beyond specific follow up questions, I like to ask Claude to analyze for logical fallacies, innacuracies, biases -- a broad fact check, if you will.
 ---
 
