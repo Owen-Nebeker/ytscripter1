@@ -1,4 +1,4 @@
-This program automates a process I have already been doing naturally and from which I have great benefited, that is, copying a URL, using a 3rd party website to download the transcript, and then uploading the transcipt to Claude to help me think more critically about the topics. I beyond specific follow up questions, I like to ask Claude to analyze for logical fallacies, innacuracies, biases -- a broad fact check, if you will.
+This program automates a process I have already been doing naturally and from which I have greatly benefited, that is, copying a URL, using a 3rd party website to download the transcript, and then uploading the transcript to Claude to help me think more critically about the topics. Beyond specific follow up questions, I like to ask Claude to analyze for logical fallacies, inaccuracies, biases -- a broad fact check, if you will.
 ---
 
 # YouTube Transcript Fetch
@@ -25,22 +25,22 @@ Throw your API key into a .env file local to wherever you're running the script.
 ## Steps
 1. Install the dependency if not already present:
    `pip install youtube-transcript-api requests --break-system-packages -q`
-2. Obtain an Anthopic API key from the link above, add credit to it. Format it in your .env as:
+2. Obtain an Anthropic API key from the link above, add credit to it. Format it in your .env as:
    `ANTHROPIC_API_KEY=xxxxxxxxxxxxx...`
-4. Run the script on the user's URL:
+3. Run the script on the user's URL:
    `python3 yt2claude.py "<url>"`
-5. If it exits with an error, report the error message to the user
+4. If it exits with an error, report the error message to the user
    directly — don't retry silently or invent a workaround. Common causes:
    captions disabled by uploader (no fix), or a network/access failure
    (tell the user this environment may not have access to fetch it, and
    they should try running the script locally instead).
-6. If it succeeds, read the resulting `.txt` file and use its contents to
+5. If it succeeds, read the resulting `.txt` file and use its contents to
    answer the user's questions about the video.
-7. If the script reports the transcript is very long (its own output will
+6. If the script reports the transcript is very long (its own output will
    say so), don't dump the whole raw transcript back into chat — summarize
    proactively and pull specific quotes only when the user asks about that
    part.
-8. Note the "TRANSCRIPT SOURCE" line from the file: if it says
+7. Note the "TRANSCRIPT SOURCE" line from the file: if it says
    "auto-generated" or "translated," mention that to the user once,
    since accuracy on names/technical terms is lower for those.
 
