@@ -30,19 +30,26 @@ Throw your API key into a .env file local to wherever you're running the script.
 ## Steps
 1. Install the dependency if not already present:
    `pip install youtube-transcript-api requests --break-system-packages -q`
-2. Run the script on the user's URL:
-   `python3 yt2claude.py "<url>" --outdir /tmp`
-3. If it exits with an error, report the error message to the user
+2. Obtain an Anthopic API key from the link above, add credit to it. Format it in your .env as:
+   `ANTRHOPIC_API_KEY=xxxxxxxxxxxxx...`
+4. Run the script on the user's URL:
+   `python3 yt2claude.py "<url>"`
+5. If it exits with an error, report the error message to the user
    directly — don't retry silently or invent a workaround. Common causes:
    captions disabled by uploader (no fix), or a network/access failure
    (tell the user this environment may not have access to fetch it, and
    they should try running the script locally instead).
-4. If it succeeds, read the resulting `.txt` file and use its contents to
+6. If it succeeds, read the resulting `.txt` file and use its contents to
    answer the user's questions about the video.
-5. If the script reports the transcript is very long (its own output will
+7. If the script reports the transcript is very long (its own output will
    say so), don't dump the whole raw transcript back into chat — summarize
    proactively and pull specific quotes only when the user asks about that
    part.
-6. Note the "TRANSCRIPT SOURCE" line from the file: if it says
+8. Note the "TRANSCRIPT SOURCE" line from the file: if it says
    "auto-generated" or "translated," mention that to the user once,
    since accuracy on names/technical terms is lower for those.
+
+GENERAL NOTES:
+
+- ensure your .env is in the same folder as wherever you're running your script from.
+- run the script in the terminal. make sure to navigate to the folder your using within the terminal before running the script.
