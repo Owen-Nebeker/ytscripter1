@@ -14,7 +14,7 @@ remote environment.
 
 Usage:
     export ANTHROPIC_API_KEY=sk-ant-...
-    python3 chat_about_video.py "<youtube_url>" [--lang en] [--model claude-opus-4-8]
+    python3 chat_about_video.py "<youtube_url>" [--lang en] [--model claude-sonnet-4-6]
 
 Requires:
     pip install youtube-transcript-api requests anthropic
@@ -107,7 +107,7 @@ def main():
     )
     parser.add_argument("url", help="YouTube video URL or bare video ID")
     parser.add_argument("--lang", default="en", help="Preferred caption language (default: en)")
-    parser.add_argument("--model", default="claude-opus-4-8", help="Claude model ID")
+    parser.add_argument("--model", default="claude-sonnet-4-6", help="Claude model ID")
     parser.add_argument("--env-file", default=".env", help="File to load env vars from (default: .env)")
     args = parser.parse_args()
 
